@@ -1,0 +1,42 @@
+<mat-toolbar color="primary">
+
+  <mat-toolbar-row>
+    <img src="assets/icons/logo.svg" class="app-logo" /> <span>AWS S3 Backup</span> <span id="app-version"> v{{appVersion}}</span>
+    <span class="example-spacer"></span>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button routerLink="new-job" mat-menu-item>
+        <mat-icon svgIcon="custom_icon_add_job"></mat-icon>
+        <span>{{ 'PAGES.NEW-JOB.MENU' | translate}}</span>
+      </button>
+      <button routerLink="" mat-menu-item>
+        <mat-icon svgIcon="custom_icon_job_list"></mat-icon>
+        <span>{{ 'PAGES.JOB-LIST.MENU' | translate}}</span>
+      </button>
+      <button routerLink="s3-explorer" mat-menu-item>
+        <mat-icon svgIcon="custom_icon_s3_explorer"></mat-icon>
+        <span>{{ 'PAGES.S3-EXPLORER.MENU' | translate}}</span>
+      </button>
+      <button routerLink="s3-stats" mat-menu-item>
+        <mat-icon svgIcon="custom_icon_s3_stats"></mat-icon>
+        <span>{{ 'PAGES.S3-STATS.MENU' | translate}}</span>
+      </button>
+      <button routerLink="settings" mat-menu-item>
+        <mat-icon svgIcon="custom_icon_settings"></mat-icon>
+        <span>{{ 'PAGES.SETTINGS.MENU' | translate}}</span>
+      </button>
+      <button routerLink="logs" mat-menu-item>
+        <mat-icon svgIcon="custom_icon_log"></mat-icon>
+        <span>{{ 'PAGES.LOGS.MENU' | translate}}</span>
+      </button>
+      <button (click)="helpPage()" mat-menu-item>
+        <mat-icon svgIcon="custom_icon_help"></mat-icon>
+        <span>{{ 'PAGES.HELP.MENU' | translate}}</span>
+      </button>
+    </mat-menu>
+
+  </mat-toolbar-row>
+</mat-toolbar>

@@ -1,0 +1,46 @@
+{
+  "productName": "AWS S3 Backup",
+  "directories": {
+    "output": "app-builds"
+  },
+  "files": [
+    "**/*",
+    "!*.ts",
+    "!*.code-workspace",
+    "!LICENSE.md",
+    "!package.json",
+    "!package-lock.json",
+    "!src/",
+    "!e2e/",
+    "!hooks/",
+    "!.angular-cli.json",
+    "!_config.yml",
+    "!karma.conf.js",
+    "!tsconfig.json",
+    "!tslint.json"
+  ],
+  "win": {
+    "icon": "icons/favicon.256x256.png",
+    "target": [
+      "portable",
+      "NSIS"
+    ]
+  },
+  "mac": {
+    "icon": "icons",
+    "target": [
+      "dmg"
+    ]
+  },
+  "linux": {
+    "icon": "icons",
+    "target": [
+      "AppImage"
+    ]
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "ulver2812",
+    "repo": "aws-s3-backup"
+  }
+}

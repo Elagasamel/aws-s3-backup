@@ -1,0 +1,123 @@
+<div class="flex-container" fxLayout fxLayoutGap="40px">
+  <div class="flex-element" fxFlex>
+    <mat-card>
+      <section class="mat-typography">
+        <h2>{{'PAGES.SETTINGS.TITLE' | translate}}</h2>
+      </section>
+      <mat-divider [inset]="true"></mat-divider>
+      <br>
+      <mat-form-field>
+        <input [(ngModel)]="settings.awsAccessKeyID" matInput placeholder="{{'PAGES.SETTINGS.AWS-KEY-ID' | translate}}">
+      </mat-form-field>
+      <mat-form-field>
+        <input [(ngModel)]="settings.awsSecretAccessKey" matInput placeholder="{{'PAGES.SETTINGS.AWS-SECRET' | translate}}">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select [(ngModel)]="settings.awsRegion" placeholder="{{'PAGES.SETTINGS.AWS-REGION' | translate}}">
+          <mat-option *ngFor="let region of regions" [value]="region.id">{{ region.value }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select [(ngModel)]="settings.language" placeholder="{{'PAGES.SETTINGS.LANGUAGE' | translate}}">
+          <mat-option *ngFor="let language of languages" [value]="language.id">{{ language.value }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-chip-list>
+
+        <mat-spinner *ngIf="spinner" [diameter]="30"></mat-spinner>
+
+        <mat-list>
+          <mat-list-item *ngIf="awsCliStatus == false"><mat-icon color="accent" mat-list-icon>error</mat-icon> {{'PAGES.SETTINGS.AWS-CLI-NOT-INSTALLED' | translate}}</mat-list-item>
+          <mat-list-item *ngIf="awsCliStatus == true"><mat-icon color="primary" mat-list-icon>check_circle</mat-icon> {{'PAGES.SETTINGS.AWS-CLI-INSTALLED' | translate}}</mat-list-item>
+
+          <mat-list-item *ngIf="awsCliCredentials == false"><mat-icon color="accent" mat-list-icon>error</mat-icon> {{'PAGES.SETTINGS.AWS-WRONG-CREDENTIALS' | translate}}</mat-list-item>
+          <mat-list-item *ngIf="awsCliCredentials == true"><mat-icon color="primary" mat-list-icon>check_circle</mat-icon> {{'PAGES.SETTINGS.AWS-CORRECT-CREDENTIALS' | translate}}</mat-list-item>
+        </mat-list>
+
+      </mat-chip-list>
+    </mat-card>
+  </div>
+</div>
+
+<div class="flex-container" fxLayout fxLayoutGap="40px">
+  <div class="flex-element" fxFlex>
+    <mat-card>
+      <section class="mat-typography">
+        <h2>{{'PAGES.S3-SETTINGS.TITLE' | translate}}</h2>
+      </section>
+      <mat-form-field>
+        <input [(ngModel)]="settings.s3MaxConcurrentRequests" matInput type="number" min="0" placeholder="{{'PAGES.S3-SETTINGS.MAX-CONCURRENT-REQUESTS' | translate}}">
+        <mat-hint>{{'PAGES.S3-SETTINGS.MAX-CONCURRENT-REQUESTS-DESC' | translate}}</mat-hint>
+      </mat-form-field>
+      <p></p>
+      <mat-form-field>
+        <input [(ngModel)]="settings.s3MaxBandwidth" (ngModelChange)="convertS3MaxBandwidth($event)" matInput type="number" min="0" placeholder="{{'PAGES.S3-SETTINGS.MAX-BANDWIDTH' | translate}}">
+        <span matSuffix>KB/s = {{bandwidthMbs}}</span>
+        <mat-hint>{{'PAGES.S3-SETTINGS.MAX-BANDWIDTH-DESC' | translate}}</mat-hint>
+      </mat-form-field>
+    </mat-card>
+  </div>
+</div>
+
+<div class="flex-container" fxLayout fxLayoutGap="40px">
+  <div class="flex-element" fxFlex>
+    <mat-card>
+      <section class="mat-typography">
+        <h2>{{'PAGES.NOTIFICATIONS-SETTINGS.TITLE' | translate}}</h2>
+      </section>
+      <p>
+        <mat-checkbox [(ngModel)]="settings.allowNotifications"> {{ 'PAGES.NOTIFICATIONS-SETTINGS.ALLOW' | translate }}</mat-checkbox>
+      </p>
+      <mat-divider [inset]="true"></mat-divider>
+      <br>
+      <mat-form-field>
+        <input [(ngModel)]="settings.emailHost" matInput placeholder="{{'PAGES.NOTIFICATIONS-SETTINGS.EMAIL.HOST' | translate}}">
+      </mat-form-field>
+      <mat-form-field>
+        <input [(ngModel)]="settings.emailPort" matInput type="number" min="0" placeholder="{{'PAGES.NOTIFICATIONS-SETTINGS.EMAIL.PORT' | translate}}">
+      </mat-form-field>
+      <p>
+        <mat-checkbox [(ngModel)]="settings.emailSecure"> {{ 'PAGES.NOTIFICATIONS-SETTINGS.EMAIL.SECURE' | translate }}</mat-checkbox>
+      </p>
+      <mat-form-field>
+        <input [(ngModel)]="settings.emailUser" matInput placeholder="{{'PAGES.NOTIFICATIONS-SETTINGS.EMAIL.USER' | translate}}">
+      </mat-form-field>
+      <mat-form-field>
+        <input [(ngModel)]="settings.emailPassword" type="password" matInput placeholder="{{'PAGES.NOTIFICATIONS-SETTINGS.EMAIL.PASSWORD' | translate}}">
+      </mat-form-field>
+      <mat-form-field>
+        <input [(ngModel)]="settings.emailSender" matInput placeholder="{{'PAGES.NOTIFICATIONS-SETTINGS.EMAIL.SENDER' | translate}}">
+      </mat-form-field>
+      <mat-form-field class="example-chip-list">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let email of settings.emailReceivers" [selectable]="selectable"
+                    [removable]="removable" (removed)="remove(email)">
+            {{email}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="{{'PAGES.NOTIFICATIONS-SETTINGS.EMAIL.RECEIVERS' | translate}}"
+                 [matChipInputFor]="chipList"
+                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur"
+                 (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+
+    </mat-card>
+  </div>
+</div>
+
+<div class="flex-container" fxLayout fxLayoutGap="40px">
+  <div class="flex-element" fxFlex>
+    <mat-card>
+      <section class="mat-typography">
+        <h2>{{'PAGES.APP-SETTINGS.TITLE' | translate}}</h2>
+      </section>
+      <p>
+        <mat-checkbox [(ngModel)]="settings.autoStart"> {{ 'PAGES.APP-SETTINGS.AUTOSTART' | translate }}</mat-checkbox>
+      </p>
+    </mat-card>
+  </div>
+</div>
+
+<button mat-raised-button class="float-right" color="primary" (click)="save()">{{'PAGES.SETTINGS.SAVE' | translate}}</button>
